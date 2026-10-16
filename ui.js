@@ -37,4 +37,4 @@ export const icon=(name,cls='')=>`<svg class="icon ${cls}" viewBox="0 0 24 24" a
 export const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const time=(ms)=>{let s=Math.floor(ms/1000);return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;};
 export const decimal=(n,d=1)=>Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
-export const modeTitle={letters:'Reconhecimento de letras',pairs:'Pares visuais',association:'Imagens mentais',sequence:'Memória de sequência'};
+export const modeTitle={letters:'Reconhecimento de letras',pairs:'Pares visuais',colors:'Letras → cores',association:'Imagens mentais',sequence:'Memória de sequência'};

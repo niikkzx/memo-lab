@@ -6,6 +6,15 @@ Inclui reconhecimento de letras, pares ordenados, associações, sequências,
 sprint, revisão de erros, cubo 3D, dicionário e estatísticas.
 Tema preto e azul-marinho, cores vívidas e interface adaptada ao celular.
 
+
+## Novos treinos
+
+- Selecione letras ou pares exatos, como `AQ QA AB`, e inclua os inversos com um toque.
+- Percorra uma rodada completa em ordem embaralhada, sem repetir; também há ordem de letras e ordem adaptativa.
+- Treine **Letras → cores**, com uma letra ou um par. Após responder, confira as cores e as peças em 3D.
+- Revise somente erros e acertos acima da meta ao terminar. A revisão inteligente considera as últimas três tentativas por item.
+- Veja precisão e tempo separados para letras, pares visuais e cores. As seleções e o histórico permanecem no navegador e nos backups.
+
 ## Publicar no GitHub Pages pelo navegador
 
 1. Extraia este ZIP no computador.

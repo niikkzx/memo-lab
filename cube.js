@@ -1,4 +1,4 @@
-import {FACES,FACE_ORDER,PIECES,add,mul,letterOf} from './model.js?v=20261016-navy3';
+import {FACES,FACE_ORDER,PIECES,add,mul,letterOf} from './model.js?v=20261016-training1';
 const dot=(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0);
 function labelInk(color,center){const rgb=color.match(/[a-f0-9]{2}/gi)?.map(x=>parseInt(x,16)/255)||[1,1,1];const light=.2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];return light<.32?(center?'rgba(255,255,255,.82)':'#ffffff'):(center?'rgba(7,15,28,.68)':'#07101e');}
 function path(ctx,ps,r=0.12){
