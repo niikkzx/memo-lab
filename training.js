@@ -1,8 +1,8 @@
-import {ALPHABET,FACE_ORDER,DEFAULT_SETTINGS,poolFor,letterOf} from './model.js?v=20261016-training1';
+import {ALPHABET,FACE_ORDER,PIECES,DEFAULT_SETTINGS,poolFor,letterOf,samePiece} from './model.js?v=20261016-piece2';
 
 export const COLOR_NAMES={U:'Branco',L:'Laranja',F:'Verde',R:'Vermelho',B:'Azul',D:'Amarelo'};
-export const isPieceMode=mode=>['letters','pairs','colors'].includes(mode);
-export const usesPairs=(mode,config)=>['pairs','association','sequence'].includes(mode)||(mode==='colors'&&config.colorSize===2);
+export const isPieceMode=mode=>['letters','pairs','colors','orientation'].includes(mode);
+export const usesPairs=(mode,config)=>['pairs','orientation','association','sequence'].includes(mode)||(mode==='colors'&&config.colorSize===2);
 export function colorName(face,config){if(!FACE_ORDER.includes(face))return '—';return config.colors[face]?.toLowerCase()===DEFAULT_SETTINGS.colors[face].toLowerCase()?COLOR_NAMES[face]:'Face '+face;}
 export function parsePairs(text){
  const tokens=String(text||'').trim().toUpperCase().split(/[\s,;|/]+/).filter(Boolean);
@@ -19,7 +19,7 @@ function summarizePerformance(recent,target){
  const errors=recent.filter(a=>!a.correct).length,avg=recent.length?recent.reduce((sum,a)=>sum+a.ms,0)/recent.length:0;
  return {seen:recent.length,errors,avg,slow:!!target&&recent.length>0&&avg>target*1000,difficult:errors>0||(!!target&&recent.length>0&&avg>target*1000)};
 }
-export function stickerPerformance(piece,attempts,target=0){return summarizePerformance(attempts.filter(a=>isPieceMode(a.mode)&&a.targets?.some(p=>p.type===piece.type&&p.id===piece.id)).slice(-3),target);}
+export function stickerPerformance(piece,attempts,target=0){return summarizePerformance(attempts.filter(a=>isPieceMode(a.mode)&&(a.mode==='orientation'?a.targets?.slice(0,1):a.targets)?.some(p=>p.type===piece.type&&p.id===piece.id)).slice(-3),target);}
 function performanceIndex(mode,attempts,target){const map=new Map();for(const a of attempts){if(a.mode!==mode)continue;const key=questionKey(a),recent=map.get(key)||[];recent.push(a);if(recent.length>3)recent.shift();map.set(key,recent);}return new Map([...map].map(([key,recent])=>[key,summarizePerformance(recent,target)]));}
 export function buildTrainingDeck(mode,config,dictionary={},attempts=[]){
  const paired=usesPairs(mode,config),custom=config.trainingScope==='custom';
@@ -27,7 +27,14 @@ export function buildTrainingDeck(mode,config,dictionary={},attempts=[]){
  const exact=custom&&paired?(config.trainingPairs||[]):[];
  if(custom&&!exact.length&&!selected.length)throw new Error('Selecione pelo menos uma letra ou informe os pares que quer treinar.');
  let deck=[];
- if(isPieceMode(mode)){
+ if(mode==='orientation'){
+  // Each question is one real edge, ordered by the sticker being recalled.
+  const all=PIECES.edge.map(first=>{const other=PIECES.edge.find(p=>p.id!==first.id&&samePiece(p,first));return {expected:letterOf(first,config)+letterOf(other,config),targets:[first,other],type:'edge'};});
+  const invalid=exact.filter(code=>!all.some(q=>q.expected===code));
+  if(invalid.length)throw new Error(`${invalid.join(', ')}: essas letras não pertencem à mesma aresta no seu esquema. Escolha as duas letras de uma peça em Meu cubo.`);
+  const available=new Set(poolFor(config,'edge').map(p=>p.id));
+  deck=all.filter(q=>available.has(q.targets[0].id)&&(!custom||(exact.length?exact.includes(q.expected):selected.includes(q.expected[0]))));
+ }else if(isPieceMode(mode)){
   const pool=poolFor(config).filter(p=>!custom||exact.length||selected.includes(letterOf(p,config)));
   if(paired){
    if(exact.length){for(const type of config.type==='mixed'?['edge','corner']:[config.type])for(const code of exact){const targets=[...code].map(l=>pool.find(p=>p.type===type&&letterOf(p,config)===l));if(targets.every(Boolean))deck.push({expected:code,targets,type});}}

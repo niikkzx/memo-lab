@@ -12,6 +12,7 @@ Tema preto e azul-marinho, cores vívidas e interface adaptada ao celular.
 - Selecione letras ou pares exatos, como `AQ QA AB`, e inclua os inversos com um toque.
 - Percorra uma rodada completa em ordem embaralhada, sem repetir; também há ordem de letras e ordem adaptativa.
 - Treine **Letras → cores**, com uma letra ou um par. Após responder, confira as cores e as peças em 3D.
+- Treine **Cores da peça**: as duas letras pertencem à mesma aresta e você escolhe a cor da primeira entre as duas cores dela. `AQ → branco`, `QA → azul`, `VO → amarelo`, `OV → vermelho` no Speffz padrão. São 12 peças e 24 orientações, com peça 3D após responder e seleção própria de pares.
 - Revise somente erros e acertos acima da meta ao terminar. A revisão inteligente considera as últimas três tentativas por item.
 - Veja precisão e tempo separados para letras, pares visuais e cores. As seleções e o histórico permanecem no navegador e nos backups.
 
@@ -50,6 +51,7 @@ dicionário e preferências. Ele não precisa ser enviado ao repositório.
 - `app.js`: interface e treinos.
 - `model.js`: peças, letras, pontuação e persistência.
 - `cube.js`: renderização 3D.
+- `training.js`: seleção de itens, pares da mesma peça e ordem dos treinos.
 - `ui.js`: ícones e utilitários de interface.
 - `style.css`: aparência e layouts responsivos.
 - `favicon.svg`: ícone do site.
